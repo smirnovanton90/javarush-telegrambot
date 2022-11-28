@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.3.0-SNAPSHOT
+
+*   JRTB-13: added deployment process to the project
+
 ## 0.2.0-SNAPSHOT
 
 *   JRTB-3: implemented Command pattern for handling Telegram Bot commands
