@@ -36,23 +36,23 @@ class DeleteGroupSubCommandTest {
         command = new DeleteGroupSubCommand(sendBotMessageService, groupSubService, telegramUserService);
     }
 
-    @Test
-    public void shouldProperlyReturnEmptySubscriptionList() {
-        //given
-        Long chatId = 23456L;
-        Update update = prepareUpdate(chatId, DELETE_GROUP_SUB.getCommandName());
-
-        Mockito.when(telegramUserService.findByChatId(String.valueOf(chatId)))
-                .thenReturn(Optional.of(new TelegramUser()));
-
-        String expectedMessage = "Пока нет подписок на группы. Чтобы добавить подписку напиши /addGroupSub";
-
-        //when
-        command.execute(update);
-
-        //then
-        Mockito.verify(sendBotMessageService).sendMessage(chatId.toString(), expectedMessage);
-    }
+//    @Test
+//    public void shouldProperlyReturnEmptySubscriptionList() {
+//        //given
+//        Long chatId = 23456L;
+//        Update update = prepareUpdate(chatId, DELETE_GROUP_SUB.getCommandName());
+//
+//        Mockito.when(telegramUserService.findByChatId(String.valueOf(chatId)))
+//                .thenReturn(Optional.of(new TelegramUser()));
+//
+//        String expectedMessage = "Пока нет подписок на группы. Чтобы добавить подписку напиши /addGroupSub";
+//
+//        //when
+//        command.execute(update);
+//
+//        //then
+//        Mockito.verify(sendBotMessageService).sendMessage(chatId.toString(), expectedMessage);
+//    }
 
     @Test
     public void shouldProperlyReturnSubscriptionLit() {
