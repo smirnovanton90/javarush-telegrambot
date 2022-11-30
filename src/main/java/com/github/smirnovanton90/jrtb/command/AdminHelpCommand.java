@@ -9,6 +9,7 @@ import static java.lang.String.format;
 /**
  * Admin Help {@link Command}.
  */
+@AdminCommand
 public class AdminHelpCommand implements Command {
 
     public static final String ADMIN_HELP_MESSAGE = format("""

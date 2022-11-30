@@ -3,14 +3,20 @@ package com.github.smirnovanton90.jrtb.command;
 import com.github.smirnovanton90.jrtb.javarushclient.JavaRushGroupClient;
 import com.github.smirnovanton90.jrtb.service.GroupSubService;
 import com.github.smirnovanton90.jrtb.service.SendBotMessageService;
+import com.github.smirnovanton90.jrtb.service.StatisticsService;
 import com.github.smirnovanton90.jrtb.service.TelegramUserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+
+import static java.util.Collections.singletonList;
 
 @DisplayName("Unit-level testing for CommandContainer")
 class CommandContainerTest {
@@ -22,25 +28,34 @@ class CommandContainerTest {
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
         JavaRushGroupClient groupClient = Mockito.mock(JavaRushGroupClient.class);
         GroupSubService groupSubService = Mockito.mock(GroupSubService.class);
-        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, groupClient, groupSubService);
+        StatisticsService statisticsService = Mockito.mock(StatisticsService.class);
+        commandContainer = new CommandContainer(sendBotMessageService,
+                telegramUserService,
+                groupClient,
+                groupSubService,
+                singletonList("username"),
+                statisticsService);
     }
 
-    @ParameterizedTest (name = "{index} - {0} - команда верная!")
-    @EnumSource(CommandName.class)
-    @DisplayName("Проверка корректную отработку всех команд")
-    public void shouldGetAllTheExistingCommands(CommandName commandName) {
-
-        Command command = commandContainer.retrieveCommand(commandName.getCommandName());
-        Assertions.assertNotEquals(UnknownCommand.class, command.getClass());
-
+    @Test
+    public void shouldGetAllTheExistingCommands() {
+        //when-then
+        Arrays.stream(CommandName.values())
+                .forEach(commandName -> {
+                    Command command = commandContainer.retrieveCommand(commandName.getCommandName(), "username");
+                    Assertions.assertNotEquals(UnknownCommand.class, command.getClass());
+                });
     }
 
-    @ParameterizedTest (name = "{index} - {0} - такая команда отсутствует!")
-    @DisplayName("Проверка корректную отработку неразобранной команды")
-    @ValueSource(strings = {"/fgjhdfgdfg", "fgjhdfgdfg", "//fgjhdfgdfg", "123", "/123"})
-    public void shouldReturnUnknownCommand(String inputCommand) {
+    @Test
+    public void shouldReturnUnknownCommand() {
+        //given
+        String unknownCommand = "/fgjhdfgdfg";
 
-        Command command = commandContainer.retrieveCommand(inputCommand);
+        //when
+        Command command = commandContainer.retrieveCommand(unknownCommand, "username");
+
+        //then
         Assertions.assertEquals(UnknownCommand.class, command.getClass());
     }
 }

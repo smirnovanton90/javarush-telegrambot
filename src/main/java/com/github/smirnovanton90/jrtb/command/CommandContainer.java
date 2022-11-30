@@ -3,6 +3,7 @@ package com.github.smirnovanton90.jrtb.command;
 import com.github.smirnovanton90.jrtb.javarushclient.JavaRushGroupClient;
 import com.github.smirnovanton90.jrtb.service.GroupSubService;
 import com.github.smirnovanton90.jrtb.service.SendBotMessageService;
+import com.github.smirnovanton90.jrtb.service.StatisticsService;
 import com.github.smirnovanton90.jrtb.service.TelegramUserService;
 import com.google.common.collect.ImmutableMap;
 
@@ -22,7 +23,8 @@ public class CommandContainer {
 
 
     public CommandContainer(SendBotMessageService sendBotMessageService, TelegramUserService telegramUserService,
-                            JavaRushGroupClient javaRushGroupClient, GroupSubService groupSubService, List<String> admins) {
+                            JavaRushGroupClient javaRushGroupClient, GroupSubService groupSubService,
+                            List<String> admins, StatisticsService statisticsService) {
 
         this.admins = admins;
         commandMap = ImmutableMap.<String, Command>builder()
@@ -30,10 +32,13 @@ public class CommandContainer {
                 .put(STOP.getCommandName(), new StopCommand(sendBotMessageService, telegramUserService))
                 .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
-                .put(STAT.getCommandName(), new StatCommand(sendBotMessageService, telegramUserService))
-                .put(ADD_GROUP_SUB.getCommandName(), new AddGroupSubCommand(sendBotMessageService, javaRushGroupClient, groupSubService))
-                .put(LIST_GROUP_SUB.getCommandName(), new ListGroupSubCommand(sendBotMessageService, telegramUserService))
-                .put(DELETE_GROUP_SUB.getCommandName(), new DeleteGroupSubCommand(sendBotMessageService, groupSubService, telegramUserService))
+                .put(STAT.getCommandName(), new StatCommand(sendBotMessageService, statisticsService))
+                .put(ADD_GROUP_SUB.getCommandName(),
+                        new AddGroupSubCommand(sendBotMessageService, javaRushGroupClient, groupSubService))
+                .put(LIST_GROUP_SUB.getCommandName(),
+                        new ListGroupSubCommand(sendBotMessageService, telegramUserService))
+                .put(DELETE_GROUP_SUB.getCommandName(),
+                        new DeleteGroupSubCommand(sendBotMessageService, groupSubService, telegramUserService))
                 .put(ADMIN_HELP.getCommandName(), new AdminHelpCommand(sendBotMessageService))
                 .build();
 
