@@ -1,5 +1,7 @@
 package com.github.smirnovanton90.jrtb.command;
 
+import com.github.smirnovanton90.jrtb.javarushclient.JavaRushGroupClient;
+import com.github.smirnovanton90.jrtb.service.GroupSubService;
 import com.github.smirnovanton90.jrtb.service.SendBotMessageService;
 import com.github.smirnovanton90.jrtb.service.TelegramUserService;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +20,9 @@ class CommandContainerTest {
     public void init() {
         SendBotMessageService sendBotMessageService = Mockito.mock(SendBotMessageService.class);
         TelegramUserService telegramUserService = Mockito.mock(TelegramUserService.class);
-        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService);
+        JavaRushGroupClient groupClient = Mockito.mock(JavaRushGroupClient.class);
+        GroupSubService groupSubService = Mockito.mock(GroupSubService.class);
+        commandContainer = new CommandContainer(sendBotMessageService, telegramUserService, groupClient, groupSubService);
     }
 
     @ParameterizedTest (name = "{index} - {0} - команда верная!")
