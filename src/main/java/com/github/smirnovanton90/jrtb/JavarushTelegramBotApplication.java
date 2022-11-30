@@ -12,4 +12,6 @@ public class JavarushTelegramBotApplication {
 		SpringApplication.run(JavarushTelegramBotApplication.class, args);
 
 	}
+
+
 }
